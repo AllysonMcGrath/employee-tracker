@@ -17,7 +17,7 @@ Detailed instructions for cloning GitHub repositories can be found [here.](https
 
 ## Usage
 
-When displaying correctly, the site should look like the below image:
+When displaying correctly, the terminal should look like the below image:
 
 ![Command line with question prompts](/assets/employeetracker.JPG)
 
