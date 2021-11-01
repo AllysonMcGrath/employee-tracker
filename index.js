@@ -1,3 +1,4 @@
+const db = require('./db/connection');
 const inquirer = require('inquirer');
 let roleChoices = {};
 let roleChoicesList = [];
@@ -47,109 +48,118 @@ const initialOptions = () => {
 };
 
 const viewDepartments = () => {
-    fetch('http://localhost:3001/api/departments')
-    .then(response => {
-        return response.json();
-    })
-    .then(response => {
-        console.table(response.data);
-        initialOptions();
-    })
+  let sql = `SELECT * FROM department`;
+
+  db.query(sql, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    initialOptions();
+  });
 };
 
 const viewRoles = () => {
-    fetch('http://localhost:3001/api/roles')
-    .then(response => {
-        return response.json();
-    })
-    .then(response => {
-        console.table(response.data);
-        initialOptions();
-    })
+  let sql = `SELECT * FROM role`;
+
+  db.query(sql, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    initialOptions();
+  });
 };
 
 const viewEmployees = () => {
-    fetch('http://localhost:3001/api/employees')
-    .then(response => {
-        return response.json();
-    })
-    .then(response => {
-        console.table(response.data);
-        initialOptions();
-    })
+  let sql = `SELECT * FROM employee`;
+
+  db.query(sql, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    initialOptions();
+  });
 };
 
-const fetchRoles = () => {
-    let roleData = fetch('http://localhost:3001/api/roles')
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(response => {
-                        response.data.forEach(element => roleChoices[element.title] = element.id);
-                        response.data.forEach(element => roleChoicesList.push(element.title));
-                    })
-};
 
-async function getRoleChoices() {
-    await fetchRoles();
+const addDepartment = () => {
+  return inquirer.prompt([
+            {
+                type: "input",
+                name: "newDepartment",
+                message: "What is the name of the new department?",
+                validate: newDepartmentInput => {
+                  if(newDepartmentInput) {
+                    return true;
+                  }
+                  else {
+                    console.log("Please enter the department's name");
+                    return false;
+                  }
+                }
+                
+            }
+          ])
+          .then(response => {
+            const sql = `INSERT INTO department (name) VALUES (?)`;
+              db.query(sql, response.newDepartment, (err, response) => {
+                if (err) throw err;
+                viewDepartments();
+                initialOptions();
+              });
+          });
 }
 
-const addEmployee = () => {
-    getRoleChoices();
-    return inquirer.prompt([
-        {
-            type: "input",
-            name: "first_name",
-            message: "What is the employee's first name?",
-            validate: first_nameInput => {
-              if(first_nameInput) {
-                return true;
-              }
-              else {
-                console.log("Please enter the employee's name");
-                return false;
-              }
+const addRole = () => {
+  db.query('SELECT name, id FROM department', (err, data) => {
+    if (err) throw err;
+
+    const departments = data.map(({ name, id }) => ({ name: name, value: id }));
+  return inquirer.prompt([
+            {
+                type: "input",
+                name: "title",
+                message: "What is the name of the new role?",
+                validate: titleInput => {
+                  if(titleInput) {
+                    return true;
+                  }
+                  else {
+                    console.log("Please enter the role's name");
+                    return false;
+                  }
+                }
+                
             },
-            
-        },
-        {
-            type: "input",
-            name: "last_name",
-            message: "What is the employee's last name?",
-            validate: last_nameInput => {
-              if(last_nameInput) {
-                return true;
-              }
-              else {
-                console.log("Please enter the employee's name");
-                return false;
-              }
-            }
-        },
-        {
+            {
+              type: "input",
+              name: "salary",
+              message: "What is the salary?",
+              validate: salaryInput => {
+                if(salaryInput) {
+                  return true;
+                }
+                else {
+                  console.log("Please enter the salary");
+                  return false;
+                }
+              } 
+          },
+          {
             type: "list",
-            name: "role_id",
-            message: "What is the employee's role?",
-            choices: roleChoicesList
-        },
-        // {
-        //     type: "list",
-        //     name: "manager_id",
-        //     message: "Who is the employee's manager?",
-        //     choices: managerChoices
-        // }
-        ]).then(response => {
-            response.role_id = roleChoices[response.role_id];
-            console.log(response);
-            fetch('http://localhost:3001/api/employees', {
-                method: 'post',
-                body: response
-            })
-        .then(function(response) {
-            console.log(response);
-            console.log("it posted!")
-            initialOptions();
-        });
-};
+            name: "departmentName",
+            message: "What is the department name?",
+            choices: departments
+          }
+          ])
+          .then(response => {
+            const sql = `INSERT INTO role (title, salary, department_id) VALUES (?,?,?)`;
+              db.query(sql, [response.title, response.salary, departments[response.departmentName].value], (err, response) => {
+                if (err) throw err;
+                viewRoles();
+                initialOptions();
+              });
+          });
+
+        })
+      };
+
+      
 
 initialOptions();
