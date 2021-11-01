@@ -19,7 +19,7 @@ Detailed instructions for cloning GitHub repositories can be found [here.](https
 
 When displaying correctly, the site should look like the below image:
 
-![Command line with question prompts](/assets/employeetracker.JPEG)
+![Command line with question prompts](/assets/employeetracker.JPG)
 
 To use this application, you need to install the dependencies with the following commands:
 
@@ -29,7 +29,7 @@ npm install dotenv
 npm install mysql2
 npm install console.tables
 
-To create the databases:
+To create the databases:<br/>
 mysql -u <username> -p <password>
 source db/db.sql
 source db/schema.sql
