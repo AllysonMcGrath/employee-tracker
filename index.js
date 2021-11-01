@@ -111,7 +111,6 @@ const addDepartment = () => {
               db.query(sql, response.newDepartment, (err, response) => {
                 if (err) throw err;
                 viewDepartments();
-                initialOptions();
               });
           });
 }
@@ -163,7 +162,6 @@ const addRole = () => {
               db.query(sql, [response.title, response.salary, departments[response.departmentName].value], (err, response) => {
                 if (err) throw err;
                 viewRoles();
-                initialOptions();
               });
           });
 
@@ -238,7 +236,6 @@ const addEmployee = () => {
                 db.query(sql, params, (err, response) => {
                   if (err) throw err;
                   viewEmployees();
-                  initialOptions();
                 });
           });
           })
