@@ -23,16 +23,16 @@ When displaying correctly, the site should look like the below image:
 
 To use this application, you need to install the dependencies with the following commands:
 
-npm install
-npm install inquirer
-npm install dotenv
-npm install mysql2
-npm install console.tables
+npm install<br/>
+npm install inquirer<br/>
+npm install dotenv<br/>
+npm install mysql2<br/>
+npm install console.tables<br/>
 
 To create the databases:<br/>
-mysql -u <username> -p <password>
-source db/db.sql
-source db/schema.sql
+mysql -u <username> -p <password><br/>
+source db/db.sql<br/>
+source db/schema.sql<br/>
 
 To start the application:
 
