@@ -24,12 +24,6 @@ When displaying correctly, the terminal should look like the below image:
 You can watch a video demonstrating the application [here.](https://watch.screencastify.com/v/LxMhpxl17KUOzy79MJh4)
 To use this application, you need to install the dependencies with the following commands:
 
-npm install<br/>
-npm install inquirer<br/>
-npm install dotenv<br/>
-npm install mysql2<br/>
-npm install console.tables<br/>
-
 To create the databases:<br/>
 mysql -u <username> -p <password><br/>
 source db/db.sql<br/>
