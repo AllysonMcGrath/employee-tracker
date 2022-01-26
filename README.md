@@ -22,7 +22,6 @@ When displaying correctly, the terminal should look like the below image:
 ![Command line with question prompts](/assets/employeetracker.JPG)
 
 You can watch a video demonstrating the application [here.](https://watch.screencastify.com/v/LxMhpxl17KUOzy79MJh4)
-To use this application, you need to install the dependencies with the following commands:
 
 To create the databases:<br/>
 mysql -u <username> -p <password><br/>
